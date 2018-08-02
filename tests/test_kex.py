@@ -66,7 +66,7 @@ def dummy_generate_key_pair(obj):
 
 def dummy_generate_key_curve25519(obj):
     private_key_value = unhexlify(
-        b'2184abc7eb3e656d2349d2470ee695b570c227340c2b2863b6c9ff427af1f040'
+        b"2184abc7eb3e656d2349d2470ee695b570c227340c2b2863b6c9ff427af1f040"
     )
     obj.P = x25519.X25519PrivateKey._from_private_bytes(private_key_value)
     if obj.transport.server_mode:
