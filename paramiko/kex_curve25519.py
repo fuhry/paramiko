@@ -37,6 +37,7 @@ c_MSG_KEXC25519_INIT, c_MSG_KEXC25519_REPLY = [
     byte_chr(c) for c in range(30, 32)
 ]
 
+
 class KexCurve25519(object):
     name = "curve25519-sha256@libssh.org"
     hash_algo = sha256
@@ -66,8 +67,9 @@ class KexCurve25519(object):
     def parse_next(self, ptype, m):
         if self.transport.server_mode and (ptype == _MSG_KEXC25519_INIT):
             return self._parse_kexc25519_init(m)
-        elif not self.transport.server_mode and \
-            (ptype == _MSG_KEXC25519_REPLY):
+        elif not self.transport.server_mode and (
+                ptype == _MSG_KEXC25519_REPLY
+            ):
 
             return self._parse_kexc25519_reply(m)
         msg = "KexCurve25519 asked to handle packet type {:d}"
@@ -95,9 +97,7 @@ class KexCurve25519(object):
         #   - Ephemeral (Curve25519) key
         #   - Signature
         K_S = m.get_string()
-        self.Q_S = x25519.X25519PublicKey.from_public_bytes(
-            m.get_string()
-        )
+        self.Q_S = x25519.X25519PublicKey.from_public_bytes(m.get_string())
         sig = m.get_binary()
 
         # Compute shared secret
