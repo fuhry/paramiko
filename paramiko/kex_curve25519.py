@@ -68,8 +68,8 @@ class KexCurve25519(object):
         if self.transport.server_mode and (ptype == _MSG_KEXC25519_INIT):
             return self._parse_kexc25519_init(m)
         elif not self.transport.server_mode and (
-                ptype == _MSG_KEXC25519_REPLY
-            ):
+            ptype == _MSG_KEXC25519_REPLY
+        ):
 
             return self._parse_kexc25519_reply(m)
         msg = "KexCurve25519 asked to handle packet type {:d}"
