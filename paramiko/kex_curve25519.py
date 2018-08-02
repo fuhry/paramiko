@@ -23,19 +23,19 @@ the only kex currently (August 2018) recommended by arthepsy's ssh-audit.
 
 # Author: Dan Fuhry <dan@fuhry.com>
 
-import os
 from hashlib import sha256
 
 from paramiko.message import Message
 from paramiko.py3compat import byte_chr, long
 from paramiko.ssh_exception import SSHException
-from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import x25519
 from binascii import hexlify
 
 
 _MSG_KEXC25519_INIT, _MSG_KEXC25519_REPLY = range(30, 32)
-c_MSG_KEXC25519_INIT, c_MSG_KEXC25519_REPLY = [byte_chr(c) for c in range(30, 32)]
+c_MSG_KEXC25519_INIT, c_MSG_KEXC25519_REPLY = [
+    byte_chr(c) for c in range(30, 32)
+]
 
 class KexCurve25519(object):
     name = "curve25519-sha256@libssh.org"
@@ -66,7 +66,9 @@ class KexCurve25519(object):
     def parse_next(self, ptype, m):
         if self.transport.server_mode and (ptype == _MSG_KEXC25519_INIT):
             return self._parse_kexc25519_init(m)
-        elif not self.transport.server_mode and (ptype == _MSG_KEXC25519_REPLY):
+        elif not self.transport.server_mode and \
+            (ptype == _MSG_KEXC25519_REPLY):
+
             return self._parse_kexc25519_reply(m)
         msg = "KexCurve25519 asked to handle packet type {:d}"
         raise SSHException(msg.format(ptype))
