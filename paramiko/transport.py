@@ -90,6 +90,7 @@ from paramiko.kex_gex import KexGex, KexGexSHA256
 from paramiko.kex_group1 import KexGroup1
 from paramiko.kex_group14 import KexGroup14
 from paramiko.kex_ecdh_nist import KexNistp256, KexNistp384, KexNistp521
+from paramiko.kex_curve25519 import KexCurve25519
 from paramiko.kex_gss import KexGSSGex, KexGSSGroup1, KexGSSGroup14
 from paramiko.message import Message
 from paramiko.packet import Packetizer, NeedRekeyException
@@ -167,6 +168,7 @@ class Transport(threading.Thread, ClosingContextManager):
         "ssh-dss",
     )
     _preferred_kex = (
+        "curve25519-sha256@libssh.org",
         "ecdh-sha2-nistp256",
         "ecdh-sha2-nistp384",
         "ecdh-sha2-nistp521",
@@ -268,6 +270,7 @@ class Transport(threading.Thread, ClosingContextManager):
         "ecdh-sha2-nistp256": KexNistp256,
         "ecdh-sha2-nistp384": KexNistp384,
         "ecdh-sha2-nistp521": KexNistp521,
+        "curve25519-sha256@libssh.org": KexCurve25519,
     }
 
     _compression_info = {
