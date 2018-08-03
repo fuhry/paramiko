@@ -29,6 +29,7 @@ from paramiko.message import Message
 from paramiko.py3compat import byte_chr, long
 from paramiko.ssh_exception import SSHException
 from cryptography.hazmat.primitives.asymmetric import x25519
+from cryptography.exceptions import UnsupportedAlgorithm
 from binascii import hexlify
 
 
@@ -74,6 +75,21 @@ class KexCurve25519(object):
             return self._parse_kexc25519_reply(m)
         msg = "KexCurve25519 asked to handle packet type {:d}"
         raise SSHException(msg.format(ptype))
+
+    @staticmethod
+    def is_supported():
+        """
+        Check if the openssl version pyca-cryptography is linked against
+        supports curve25519 key agreement.
+
+        Returns True if OpenSSL supports x25519 keys, and False otherwise.
+        """
+        try:
+            x25519.X25519PublicKey.from_public_bytes(b"\x00" * 32)
+        except UnsupportedAlgorithm:
+            return False
+
+        return True
 
     # ...internals...
 

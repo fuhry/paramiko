@@ -23,6 +23,7 @@ Some unit tests for the key exchange protocols.
 from binascii import hexlify, unhexlify
 import os
 import unittest
+import pytest
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
@@ -562,6 +563,12 @@ class KexTest(unittest.TestCase):
         self.assertEqual(H, hexlify(transport._H).upper())
 
     def test_13_kex_c25519_client(self):
+        # Skip test if system OpenSSL doesn't support x25519
+        if not KexCurve25519.is_supported():
+            return pytest.skip(
+                "openssl used by cryptography does not support x25519"
+            )
+
         K = (
             71294722834835117201316639182051104803802881348227506835068888449366462300724
         )
@@ -590,6 +597,12 @@ class KexTest(unittest.TestCase):
         self.assertTrue(transport._activated)
 
     def test_14_kex_c25519_server(self):
+        # Skip test if system OpenSSL doesn't support x25519
+        if not KexCurve25519.is_supported():
+            return pytest.skip(
+                "openssl used by cryptography does not support x25519"
+            )
+
         K = (
             71294722834835117201316639182051104803802881348227506835068888449366462300724
         )

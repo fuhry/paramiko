@@ -182,6 +182,7 @@ class Transport(threading.Thread, ClosingContextManager):
         "diffie-hellman-group14-sha1",
         "diffie-hellman-group1-sha1",
     )
+    _preferred_c25519kex = ("curve25519-sha256@libssh.org",)
     _preferred_gsskex = (
         "gss-gex-sha1-toWM5Slw5Ew8Mqkay+al2g==",
         "gss-group14-sha1-toWM5Slw5Ew8Mqkay+al2g==",
@@ -399,6 +400,12 @@ class Transport(threading.Thread, ClosingContextManager):
         self.session_id = None
         self.host_key_type = None
         self.host_key = None
+        self.use_c25519_kex = False
+
+        if self._kex_info["curve25519-sha256@libssh.org"].is_supported():
+            self._preferred_kex = (
+                self._preferred_c25519kex + self._preferred_kex
+            )
 
         # GSS-API / SSPI Key Exchange
         self.use_gss_kex = gss_kex
